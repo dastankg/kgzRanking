@@ -57,7 +57,7 @@ def get_kyrgyzstan_standings():
                     else:
                         a, b = a[0], a[1]
 
-                        d[Problem[i]] = a + '\n\n' + b
+                        d[Problem[i]] = a + '<br>' + b
             standings.append(d)
 
     for ind, row in enumerate(rows):
@@ -84,7 +84,7 @@ def get_kyrgyzstan_standings():
                     else:
                         a, b = a[0], a[1]
 
-                        d[Problem[i]] = a + '\n\n' + b
+                        d[Problem[i]] = a + '<br>' + b
             top_standings.append(d)
             if len(top_standings) >= 12:
                 break
