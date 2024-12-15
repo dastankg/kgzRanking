@@ -7,6 +7,7 @@
         table {
             border-collapse: collapse;
             width: 100%;
+            margin-bottom: 20px;
         }
         th, td {
             border: 1px solid black;
@@ -16,10 +17,13 @@
         th {
             background-color: #f2f2f2;
         }
+        h2 {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>Standings</h1>
+    <h1>Standings for Kyrgyzstan Teams</h1>
     <table>
         <thead>
             <tr>
@@ -30,6 +34,26 @@
         </thead>
         <tbody>
             {% for team in standings %}
+            <tr>
+                {% for column in columns %}
+                <td>{{ team[column] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Top 12 Teams</h2>
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in top_12 %}
             <tr>
                 {% for column in columns %}
                 <td>{{ team[column] }}</td>

@@ -7,62 +7,92 @@ app = Flask(__name__)
 
 def get_kyrgyzstan_standings():
     # Problem columns
-    Problem = ['rank', 'Team', '=',
+    Problem = ['rank', 'Team', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', '=',
                'penalty']
 
     # URL of the page
     url = "https://nerc.itmo.ru/archive/2024/standings.html"
 
-    try:
-        # Load the page
-        response = requests.get(url)
-        response.encoding = 'cp1251'
-        response.raise_for_status()  # Check request success
+    # Load the page
+    response = requests.get(url)
+    response.encoding = 'cp1251'
+    response.raise_for_status()  # Check request success
 
-        # Create BeautifulSoup object
-        soup = BeautifulSoup(response.text, "html.parser")
-        table = soup.find("table")  # Or specify table with a class
+    # Create BeautifulSoup object
+    soup = BeautifulSoup(response.text, "html.parser")
+    table = soup.find("table")  # Or specify table with a class
 
-        # Extract table rows
-        rows = table.find_all("tr")
+    # Extract table rows
+    rows = table.find_all("tr")
 
-        # Store standings
-        standings = []
+    # Store standings
+    standings = []
+    top_standings = []
 
-        # Process each row
-        for row in rows:
+    # Process each row
+    for row in rows:
 
+        cells = row.find_all("td")
+        data = [cell.get_text(strip=True) for cell in cells]
+        data1 = [cell for cell in cells]
+        d = {}
+        # Filter for Kyrgyzstan locations
+
+        if len(data) > 0 and (any(location in data[1] for location in ['AUCA', 'UCA', 'Kyrgyz STU', 'KRSU'])):
+            for i in range(len(Problem)):
+                if i <= 1:
+                    d[Problem[i]] = data[i]
+                elif i >= len(Problem) - 2:
+                    d[Problem[i]] = data[i]
+                else:
+                    a = str(data1[i])
+                    a = a.replace('<td><i>', '')
+                    a = a.replace('<s><br/>', ' ')
+                    a = a.replace('</s></i></td>', '')
+                    a = a.split()
+                    if len(a) == 1:
+                        d[Problem[i]] = '.'
+                    else:
+                        a, b = a
+
+                        d[Problem[i]] = a + '\n\n' + b
+            standings.append(d)
+
+    top_standings = []
+    for ind, row in enumerate(rows):
+        if ind >= 2:
             cells = row.find_all("td")
             data = [cell.get_text(strip=True) for cell in cells]
             data1 = [cell for cell in cells]
             d = {}
-            # Filter for Kyrgyzstan locations
-
-            if len(data) > 0 and any(location in data[1] for location in ['AUCA', 'UCA', 'Kyrgyz STU', 'KRSU']):
-                for i in range(len(Problem)):
-                    if i <= 1:
-                        d[Problem[i]] = data[i]
-                    elif i >= len(Problem) - 2:
-                        d[Problem[i]] = data[i]
+            for i in range(len(Problem)):
+                if i <= 1:
+                    d[Problem[i]] = data[i]
+                elif i >= len(Problem) - 2:
+                    d[Problem[i]] = data[i]
+                else:
+                    a = str(data1[i])
+                    a = a.replace('<td><i>', '')
+                    a = a.replace('<s><br/>', ' ')
+                    a = a.replace('</s></i></td>', '')
+                    a = a.split()
+                    if len(a) == 1:
+                        d[Problem[i]] = '.'
                     else:
-                        a = str(data1[i])
-                        a = a.replace('<td><i>', '')
-                        a = a.replace('<s><br/>', ' ')
-                        a = a.replace('</s></i></td>', '')
-                        a, b = a.split()
-                        d[Problem[i]] = a + '\n\n' + b
-                standings.append(d)
-        return Problem, standings
+                        a, b = a
 
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return Problem, []
+                        d[Problem[i]] = a + '\n\n' + b
+            top_standings.append(d)
+            if len(top_standings) > 12:
+                break
+
+    return Problem, standings, top_standings
 
 
 @app.route('/')
 def index():
-    columns, data = get_kyrgyzstan_standings()
-    return render_template('standings.html', columns=columns, standings=data)
+    columns, data, top_12 = get_kyrgyzstan_standings()
+    return render_template('standings.html', columns=columns, standings=data, top_12=top_12)
 
 
 if __name__ == '__main__':
