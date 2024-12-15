@@ -7,31 +7,65 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 14px;
-            margin: 20px; /* Добавлены отступы по краям */
+            margin: 20px;
+            background-color: #f4f4f9; /* Легкий фон для улучшения читаемости */
         }
         table {
             border-collapse: collapse;
             width: 100%;
             margin-bottom: 15px;
+            background-color: #fff; /* Белый фон для таблиц */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для визуальной глубины */
+            border-radius: 5px; /* Сглаженные углы */
+            overflow: hidden;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 4px;
+            padding: 8px;
             text-align: left;
-            font-size: 12px;
+            font-size: 13px;
         }
         th {
-            background-color: #f8f8f8;
+            background-color: #f0f0f5;
             font-weight: bold;
+            color: #333;
         }
         h1, h2 {
             margin-top: 10px;
             margin-bottom: 10px;
-            font-size: 16px;
+            font-size: 18px;
+            color: #333;
         }
         #countdown {
             font-size: 12px;
             color: #666;
+        }
+        .gold td:first-child {
+            background-color: #ffd700;
+            font-weight: bold;
+            color: #333;
+        }
+        .silver td:first-child {
+            background-color: #c0c0c0;
+            font-weight: bold;
+            color: #333;
+        }
+        .bronze td:first-child {
+            background-color: #cd7f32;
+            font-weight: bold;
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9; /* Полосатый эффект для строк */
+        }
+        tr:hover {
+            background-color: #f1f1f1; /* Подсветка строки при наведении */
+        }
+        td:first-child {
+            width: 5%; /* Уменьшение размера первой колонки */
+        }
+        td:nth-child(2) {
+            width: 20%; /* Уменьшение размера колонки Team */
         }
     </style>
 </head>
@@ -47,7 +81,7 @@
         </thead>
         <tbody>
             {% for team in standings %}
-            <tr>
+            <tr class="{% if loop.index <= 4 %}gold{% elif loop.index <= 8 %}silver{% elif loop.index <= 12 %}bronze{% endif %}">
                 {% for column in columns %}
                 <td>{{ team[column]|safe }}</td>
                 {% endfor %}
@@ -67,7 +101,7 @@
         </thead>
         <tbody>
             {% for team in top_12 %}
-            <tr>
+            <tr class="{% if loop.index <= 4 %}gold{% elif loop.index <= 8 %}silver{% elif loop.index <= 12 %}bronze{% endif %}">
                 {% for column in columns %}
                 <td>{{ team[column]|safe }}</td>
                 {% endfor %}
