@@ -49,16 +49,17 @@ def get_kyrgyzstan_standings():
                     a = a.replace('<td><i>', '')
                     a = a.replace('<s><br/>', ' ')
                     a = a.replace('</s></i></td>', '')
+                    a = a.replace('<td><i', '')
+                    a = a.replace('class="first-to-solve">', '')
                     a = a.split()
                     if len(a) == 1:
                         d[Problem[i]] = '.'
                     else:
-                        a, b = a
+                        a, b = a[0], a[1]
 
                         d[Problem[i]] = a + '\n\n' + b
             standings.append(d)
 
-    top_standings = []
     for ind, row in enumerate(rows):
         if ind >= 2:
             cells = row.find_all("td")
@@ -75,11 +76,13 @@ def get_kyrgyzstan_standings():
                     a = a.replace('<td><i>', '')
                     a = a.replace('<s><br/>', ' ')
                     a = a.replace('</s></i></td>', '')
+                    a = a.replace('<td><i', '')
+                    a = a.replace('class="first-to-solve">', '')
                     a = a.split()
                     if len(a) == 1:
                         d[Problem[i]] = '.'
                     else:
-                        a, b = a
+                        a, b = a[0], a[1]
 
                         d[Problem[i]] = a + '\n\n' + b
             top_standings.append(d)
