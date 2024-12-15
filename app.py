@@ -53,7 +53,12 @@ def get_kyrgyzstan_standings():
                     a = a.replace('class="first-to-solve">', '')
                     a = a.split()
                     if len(a) == 1:
-                        d[Problem[i]] = '.'
+                        a = a[0]
+                        a = str(a).replace('<td><b>', '')
+                        a = str(a).replace('</b></td>', '')
+                        a = str(a).replace('<td>', '')
+                        a = str(a).replace('</td>', '')
+                        d[Problem[i]] = a
                     else:
                         a, b = a[0], a[1]
 
