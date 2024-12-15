@@ -66,6 +66,11 @@ def get_kyrgyzstan_standings():
             standings.append(d)
 
     for ind, row in enumerate(rows):
+        if ind == 0:
+            t = str(row.find_all('p')[0]).replace('<p>', '').replace('<br/>status:  running</p>', '')
+            t = t.replace(' of ', ' ')
+            print(t)
+
         if ind >= 2:
             cells = row.find_all("td")
             data = [cell.get_text(strip=True) for cell in cells]
@@ -94,13 +99,13 @@ def get_kyrgyzstan_standings():
             if len(top_standings) >= 12:
                 break
 
-    return Problem, standings, top_standings
+    return Problem, standings, top_standings, t.split()[0]
 
 
 @app.route('/')
 def index():
-    columns, data, top_12 = get_kyrgyzstan_standings()
-    return render_template('standings.html', columns=columns, standings=data, top_12=top_12)
+    columns, data, top_12, t = get_kyrgyzstan_standings()
+    return render_template('standings.html', columns=columns, standings=data, top_12=top_12, t=t)
 
 
 if __name__ == '__main__':
