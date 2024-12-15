@@ -86,7 +86,7 @@ def get_kyrgyzstan_standings():
 
                         d[Problem[i]] = a + '\n\n' + b
             top_standings.append(d)
-            if len(top_standings) > 12:
+            if len(top_standings) >= 12:
                 break
 
     return Problem, standings, top_standings
