@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Standings</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Standings</h1>
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in standings %}
+            <tr>
+                {% for column in columns %}
+                <td>{{ team[column] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    <script>
+        // Функция для обновления страницы
+        function refreshPage() {
+            location.reload();
+        }
+
+        // Функция обратного отсчета
+        function startCountdown(seconds) {
+            const countdownElement = document.getElementById('countdown');
+            let remainingSeconds = seconds;
+
+            const countdownInterval = setInterval(() => {
+                countdownElement.textContent = `Следующее обновление через ${remainingSeconds} секунд`;
+                remainingSeconds--;
+
+                if (remainingSeconds < 0) {
+                    clearInterval(countdownInterval);
+                    refreshPage();
+                }
+            }, 1000);
+        }
+
+        // Запуск обратного отсчета при загрузке страницы
+        startCountdown(30);
+    </script>
+</body>
+</html>
