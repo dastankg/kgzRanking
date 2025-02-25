@@ -37,8 +37,8 @@ def get_kyrgyzstan_standings():
         data1 = [cell for cell in cells]
         d = {}
         # Filter for Kyrgyzstan locations
-
-        if len(data) > 0 and (any(location in data[1] for location in ['AUCA', 'UCA', 'Kyrgyz STU', 'KRSU'])):
+        myTeam = ['AUCA', 'UCA', 'Kyrgyz STU', 'KRSU']
+        if len(data) > 0 and (any(location in data[1] for location in myTeam)):
             for i in range(len(Problem)):
                 if i <= 1:
                     d[Problem[i]] = data[i]
